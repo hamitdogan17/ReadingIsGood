@@ -1,17 +1,18 @@
-using AutoMapper;
 using Basket.Api.Data;
 using Basket.Api.Data.Interfaces;
 using Basket.Api.Repositories;
 using Basket.Api.Repositories.Interfaces;
 using EventBusRabbitMQ;
 using EventBusRabbitMQ.Producer;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Validations.Rules;
 using RabbitMQ.Client;
 using StackExchange.Redis;
 
@@ -67,6 +68,10 @@ namespace Basket.Api
             });
 
             services.AddSingleton<EventBusRabbitMQProducer>();
+
+
+            services.AddHealthChecks()
+                    .AddRedis(Configuration["CacheSettings:ConnectionString"], "Redis Health", HealthStatus.Degraded);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +95,16 @@ namespace Basket.Api
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Basket API V1");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }

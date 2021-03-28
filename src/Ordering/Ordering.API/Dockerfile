@@ -11,6 +11,7 @@ COPY ["src/Ordering/Ordering.Application/Ordering.Application.csproj", "src/Orde
 COPY ["src/Ordering/Ordering.Core/Ordering.Core.csproj", "src/Ordering/Ordering.Core/"]
 COPY ["src/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj", "src/Ordering/Ordering.Infrastructure/"]
 COPY ["src/Common/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "src/Common/EventBusRabbitMQ/"]
+COPY ["src/Common/Logging/Logging.csproj", "src/Common/Logging/"]
 RUN dotnet restore "src/Ordering/Ordering.API/Ordering.API.csproj"
 COPY . .
 WORKDIR "/src/src/Ordering/Ordering.API"

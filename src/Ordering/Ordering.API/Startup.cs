@@ -1,23 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using AutoMapper;
 using EventBusRabbitMQ;
+using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Ordering.API.Extentions;
 using Ordering.API.RabbitMQ;
-using Ordering.Application.Commands;
 using Ordering.Application.Handlers;
 using Ordering.Core.Repositories;
 using Ordering.Core.Repositories.Base;
@@ -79,6 +73,8 @@ namespace Ordering.API
             });
 
             services.AddSingleton<EventBusRabbitMQConsumer>();
+
+            services.AddHealthChecks().AddDbContextCheck<OrderContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +100,16 @@ namespace Ordering.API
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Order API V1");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }

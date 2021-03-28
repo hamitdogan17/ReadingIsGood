@@ -3,11 +3,13 @@ using EventBusRabbitMQ;
 using EventBusRabbitMQ.Common;
 using EventBusRabbitMQ.Events;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Ordering.Application.Commands;
 using Ordering.Core.Repositories;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using System.Text;
 
 namespace Ordering.API.RabbitMQ
@@ -18,13 +20,15 @@ namespace Ordering.API.RabbitMQ
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly ILogger<EventBusRabbitMQConsumer> _logger;
 
-        public EventBusRabbitMQConsumer(IRabbitMQConnection rabbitMQConnection, IMediator mediator, IMapper mapper, IOrderRepository orderRepository)
+        public EventBusRabbitMQConsumer(IRabbitMQConnection rabbitMQConnection, IMediator mediator, IMapper mapper, IOrderRepository orderRepository, ILogger<EventBusRabbitMQConsumer> logger)
         {
             _rabbitMQConnection = rabbitMQConnection;
             _mediator = mediator;
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
         public void Consume()
@@ -47,6 +51,8 @@ namespace Ordering.API.RabbitMQ
 
                 var command = _mapper.Map<CheckoutOrderCommand>(basketCheckoutEvent);
                 var result = await _mediator.Send(command);
+
+                _logger.LogInformation("EventBusRabbitMQConsumer consumed successfully. Created Order Id : {newOrderId}", result);
             }
         }
 

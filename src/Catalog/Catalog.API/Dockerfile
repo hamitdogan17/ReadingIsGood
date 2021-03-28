@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["src/Catalog/Catalog.API/Catalog.API.csproj", "src/Catalog/Catalog.API/"]
+COPY ["src/Common/Logging/Logging.csproj", "src/Common/Logging/"]
 RUN dotnet restore "src/Catalog/Catalog.API/Catalog.API.csproj"
 COPY . .
 WORKDIR "/src/src/Catalog/Catalog.API"

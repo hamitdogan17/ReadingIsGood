@@ -1,6 +1,8 @@
+using Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace OcelotAPIGateway
 {
@@ -17,6 +19,7 @@ namespace OcelotAPIGateway
                 {
                     webBuilder.UseStartup<Startup>();
                 })
+            .UseSerilog(SeriLogger.Configure)
             .ConfigureAppConfiguration((hostingContext, config) =>
             {
                 config.AddJsonFile("ocelot.json");
