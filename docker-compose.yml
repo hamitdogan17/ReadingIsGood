@@ -33,6 +33,16 @@ services:
         build:
             context: .
             dockerfile: src/APIGateway/OcelotAPIGateway/Dockerfile
+    customer.api:
+        image: ${DOCKER_REGISTRY-}customerapi
+        build:
+            context: .
+            dockerfile: src/Customer/Customer.API/Dockerfile
+    auth.api:
+        image: ${DOCKER_REGISTRY-}authapi
+        build:
+            context: .
+            dockerfile: src/Auth/Auth.API/Dockerfile
 
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2

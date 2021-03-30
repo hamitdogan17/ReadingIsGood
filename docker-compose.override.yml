@@ -34,6 +34,9 @@ services:
         container_name: catalogapi
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
             - "CatalogDatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
         depends_on:
@@ -47,6 +50,9 @@ services:
         container_name: basketapi
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
             - "ConnectionStrings:Redis=basketdb:6379"
             - "EventBus:HostName=rabbitmq"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
@@ -63,6 +69,9 @@ services:
         restart: on-failure
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
             - "ConnectionStrings:OrderConnection=Server=orderdb;Database=OrderDb;User Id=sa;Password=SwN12345678;"
             - "EventBus:HostName=rabbitmq"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
@@ -74,10 +83,47 @@ services:
             - ${HOME}/.aspnet/https:/root/.aspnet/https/
         ports:
             - "8002:80"
+    customer.api:
+        container_name: customerapi
+        restart: on-failure
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - "ConnectionStrings:OrderConnection=Server=orderdb;Database=OrderDb;User Id=sa;Password=SwN12345678;"
+            - "EventBus:HostName=rabbitmq"
+            - "ElasticConfiguration:Uri=http://elasticsearch:9200"
+        depends_on:
+            - orderdb
+            - rabbitmq
+        volumes:
+            - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+            - ${HOME}/.aspnet/https:/root/.aspnet/https/
+        ports:
+            - "8003:80"
+    auth.api:
+        container_name: authapi
+        restart: on-failure
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
+            - "ConnectionStrings:OrderConnection=Server=orderdb;Database=OrderDb;User Id=sa;Password=SwN12345678;"
+            - "ElasticConfiguration:Uri=http://elasticsearch:9200"
+        depends_on:
+            - orderdb
+            - rabbitmq
+        volumes:
+            - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
+            - ${HOME}/.aspnet/https:/root/.aspnet/https/
+        ports:
+            - "8004:80"
     ocelotapigateway:
         container_name: ocelotapigateway
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
         depends_on:
             - catalog.api

@@ -4,6 +4,7 @@ using Basket.Api.Repositories.Interfaces;
 using EventBusRabbitMQ.Common;
 using EventBusRabbitMQ.Events;
 using EventBusRabbitMQ.Producer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System;
@@ -14,6 +15,7 @@ namespace Basket.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
