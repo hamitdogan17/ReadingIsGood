@@ -1,6 +1,7 @@
 ﻿using Catalog.API.Data.Interfaces;
 using Catalog.API.Entities;
 using Catalog.API.Repositories.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,11 +44,9 @@ namespace Catalog.API.Repositories
 
         public async Task<IEnumerable<Product>> GetProductByCategory(string categoryName)
         {
-            FilterDefinition<Product> filter = Builders<Product>.Filter.ElemMatch(p => p.Category, categoryName);
-            return await _context
-                .Products
-                .Find(filter)
-                .ToListAsync();
+            var filter = Builders<Product>.Filter.Regex("Category", new BsonRegularExpression(".*" + categoryName + ".*"));
+
+            return await (await _context.Products.FindAsync<Product>(filter).ConfigureAwait(false)).ToListAsync();
         }
 
         public async Task Create(Product product)
