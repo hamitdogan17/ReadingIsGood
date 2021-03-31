@@ -25,7 +25,7 @@ User can add/delete products to basket and can checkout the basket after the che
        
 -   **Ordering API ->  [http://host.docker.internal:8002/swagger/index.html](http://host.docker.internal:8004/swagger/index.html)**
 -   **Customer API ->  [http://host.docker.internal:8003/swagger/index.html](http://host.docker.internal:8010/Catalog)**
--   **Auth API ->  [http://host.docker.internal:8004/swagger/index.html](http://host.docker.internal:8010/Catalog)**
+-   **Auth API ->  [http://host.docker.internal:8004/swagger/index.html](http://host.docker.internal:8010/Catalog)**  -- hamit/12345
 -   **API Gateway ->  [http://host.docker.internal:7000/Catalog](http://host.docker.internal:8010/Catalog)**
     
 -   **Rabbit Management Dashboard ->  [http://host.docker.internal:15672](http://host.docker.internal:15672/)**  -- guest/guest
