@@ -115,7 +115,7 @@ namespace Basket.Api
 
 
             services.AddHealthChecks()
-                    .AddRedis(Configuration["CacheSettings:ConnectionString"], "Redis Health", HealthStatus.Degraded);
+                    .AddRedis(Configuration["ConnectionStrings:Redis"], "Redis Health", HealthStatus.Degraded);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

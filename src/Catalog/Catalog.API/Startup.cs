@@ -86,7 +86,7 @@ namespace Catalog.API
             });
 
             services.AddHealthChecks()
-                    .AddMongoDb(Configuration["DatabaseSettings:ConnectionString"], "MongoDb Health", HealthStatus.Degraded);
+                    .AddMongoDb(Configuration["CatalogDatabaseSettings:ConnectionString"], "MongoDb Health", HealthStatus.Degraded);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -52,7 +52,7 @@ namespace Basket.Api.Controllers
             return Ok(await _repository.DeleteBasket(userName));
         }
 
-        [Route("[action]")]
+        [Route("Checkout")]
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
