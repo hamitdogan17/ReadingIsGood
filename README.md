@@ -2,7 +2,7 @@
 Getir - Reading is good - ecommerce - .Net Core microservices, Ocelot, RabbitMQ, Elastic Search, Kibana, Sql Server
 
 ## Architecture
-![enter image description here](https://user-images.githubusercontent.com/11176913/113098468-2b0fa400-9201-11eb-8b99-07faa71bd9d0.png)
+![enter image description here](https://user-images.githubusercontent.com/11176913/113179997-e7488900-9258-11eb-8f89-3c83d83a8b31.png)
 
 
 ## Features
