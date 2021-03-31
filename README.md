@@ -1,18 +1,20 @@
 # ReadingIsGood
-Getir - Reading is good - ecommerce - .Net Core microservices, Ocelot, RabbitMQ, Elastic Search, Kibana, Sql Server
+Getir - Reading is good - ecommerce - .Net Core microservices, Ocelot, RabbitMQ, Elastic Search, Kibana, Sql Server, Postgresql, Dapper, EF Core, 
 
 ## Architecture
 ![enter image description here](https://user-images.githubusercontent.com/11176913/113179997-e7488900-9258-11eb-8f89-3c83d83a8b31.png)
 
-
 ## Features
 
-User can add, check/uncheck, list and delete catalog
-User can add/delete products to basket and can checkout the basket after the checkout products will order as automatic with rabbitmq event sourcing.
+ - User can add, check/uncheck, list and delete catalog  
+ - User can add/delete products to basket and can checkout the basket  
+ - After the basket checkout, products will order as automatic with rabbitmq event
+   sourcing
+  - User can search orders, crud customer processes
 
 ## Installing and Running
 **Requirements;** 
-- Docker Desktop
+- Docker Desktop - minimum amount of memory and CPU should be 4GB and 2CPU
 - Git
 
 **Clone or download project**, then build and run with commands below;
