@@ -23,6 +23,18 @@ services:
             SA_PASSWORD: "SwN12345678"
             ACCEPT_EULA: "Y"
 
+    customerdb:
+        container_name: customerdb
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin1234
+            - POSTGRES_DB=CustomerDb
+        restart: always
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+
     rabbitmq:
         container_name: rabbitmq
         restart: always
@@ -88,11 +100,13 @@ services:
         restart: on-failure
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
-            - "EventBus:HostName=rabbitmq"
+            - "JWT:Security=ReadingIsGood authentication"
+            - "JWT:Issuer=localhost"
+            - "JWT:Audience=ReadingIsGood"
+            - "DatabaseSettings:ConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234;"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
         depends_on:
-            - orderdb
-            - rabbitmq
+            - customerdb
         volumes:
             - ${HOME}/.microsoft/usersecrets/:/root/.microsoft/usersecrets
             - ${HOME}/.aspnet/https:/root/.aspnet/https/
@@ -106,7 +120,6 @@ services:
             - "JWT:Security=ReadingIsGood authentication"
             - "JWT:Issuer=localhost"
             - "JWT:Audience=ReadingIsGood"
-            - "ConnectionStrings:OrderConnection=Server=orderdb;Database=OrderDb;User Id=sa;Password=SwN12345678;"
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
         depends_on:
             - orderdb
@@ -156,6 +169,7 @@ services:
             - elasticsearch
         ports:
             - "5601:5601"
+
     webstatus:
         container_name: webstatus
         environment:

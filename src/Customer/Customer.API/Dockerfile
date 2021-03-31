@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["src/Customer/Customer.API/Customer.API.csproj", "src/Customer/Customer.API/"]
+COPY ["src/Common/Logging/Logging.csproj", "src/Common/Logging/"]
 RUN dotnet restore "src/Customer/Customer.API/Customer.API.csproj"
 COPY . .
 WORKDIR "/src/src/Customer/Customer.API"
